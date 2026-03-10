@@ -3,7 +3,7 @@ const app = express();
 app.use(express.json());
 
 const VERIFY_TOKEN = "mitoken123";
-const N8N_WEBHOOK_URL = "https://souh.app.n8n.cloud/webhook-test/whatsapp"; // ← tu URL de N8n
+const N8N_WEBHOOK_URL = "https://souh.app.n8n.cloud/webhook/whatsapp"; // ← tu URL de N8n
 
 app.get('/webhook', (req, res) => {
   if (req.query['hub.verify_token'] === VERIFY_TOKEN) {
