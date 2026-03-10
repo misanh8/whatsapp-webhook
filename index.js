@@ -3,6 +3,7 @@ const app = express();
 app.use(express.json());
 
 const VERIFY_TOKEN = "mitoken123";
+const N8N_WEBHOOK_URL = "https://tu-usuario.app.n8n.cloud/webhook-test/whatsapp"; // ← tu URL de N8n
 
 app.get('/webhook', (req, res) => {
   if (req.query['hub.verify_token'] === VERIFY_TOKEN) {
@@ -12,9 +13,17 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-app.post('/webhook', (req, res) => {
-  console.log(JSON.stringify(req.body, null, 2));
+app.post('/webhook', async (req, res) => {
+  const body = req.body;
+  
+  // Reenviar a N8n
+  await fetch(N8N_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
   res.sendStatus(200);
 });
 
-app.listen(3000, () => console.log('Webhook activo en puerto 3000'));
+app.listen(3000, () => console.log('Webhook activo'));
